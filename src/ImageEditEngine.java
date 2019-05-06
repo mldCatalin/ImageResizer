@@ -1,19 +1,25 @@
 import imagescaling.ResampleFilters;
 import imagescaling.ResampleOp;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 
-/**
- * @author Catalin Moldovan
- */
-
 public class ImageEditEngine {
 
-    public ImageEditEngine() {
+    private final static int WIDTH = 800;
+    private final static int HEIGHT = 800;
+    private Image img;
+
+    Image getImg() {
+        return img;
+    }
+
+    ImageEditEngine(File file) {
+        this.img = openImage(file);
+        img = resize(WIDTH, HEIGHT, img);
+        img = fill(img);
     }
 
     public static Image openImage(URL imgUrl) {
@@ -25,7 +31,7 @@ public class ImageEditEngine {
         }
     }
 
-    public static Image openImage(File file) {
+    static Image openImage(File file) {
         try {
             return ImageIO.read(file);
         } catch (Exception e) {
@@ -34,7 +40,7 @@ public class ImageEditEngine {
         }
     }
 
-    public Image resize(int boundWidth, int boundHeight, Image img) {
+    Image resize(int boundWidth, int boundHeight, Image img) {
         int original_width = ((BufferedImage) img).getWidth();
         int original_height = ((BufferedImage) img).getHeight();
         int new_width = original_width;
@@ -56,24 +62,16 @@ public class ImageEditEngine {
             new_width = (new_height * original_width) / original_height;
         }
         var resizeFactor = new_height / original_height;
-//        while (resizeFactor < 0.5) {
-//            img = img.getScaledInstance(original_width / 2, original_height / 2, Image.SCALE_AREA_AVERAGING);
-//            original_height = original_height / 2;
-//            original_width = original_width / 2;
-//            resizeFactor = new_height / original_height;
-//        }
+
         ResampleOp resizeOp = new ResampleOp(new_width, new_height);
-        ;
         resizeOp.setFilter(ResampleFilters.getLanczos3Filter());
         BufferedImage scaledImage = resizeOp.filter(toBufferedImage(img), null);
         return scaledImage;
         //return img.getScaledInstance(new_width, new_height, Image.SCALE_AREA_AVERAGING);
     }
 
-    public static BufferedImage toBufferedImage(Image img)
-    {
-        if (img instanceof BufferedImage)
-        {
+    private static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
 
@@ -89,7 +87,7 @@ public class ImageEditEngine {
         return bimage;
     }
 
-    public Image Fill(Image originalImg) {
+    Image fill(Image originalImg) {
         int original_width = originalImg.getWidth(null);
         int original_height = originalImg.getHeight(null);
         if (original_height == original_width)
@@ -103,9 +101,4 @@ public class ImageEditEngine {
         g.drawImage(originalImg, (max - original_width) / 2, (max - original_height) / 2, original_width, original_height, Color.BLACK, null);
         return img;
     }
-
-
 }
-
-
-

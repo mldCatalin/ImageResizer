@@ -1,7 +1,5 @@
 import org.apache.commons.io.FileUtils;
-
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,20 +7,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author Catalin Moldovan
- */
-public class FileManager {
+class FileManager {
     private String filesLocation;
     private ImageValidator validator;
-    int outputCounter;
+    private int outputCounter;
 
-    public FileManager() {
+    FileManager() {
         filesLocation = System.getProperty("user.dir");
         validator = new ImageValidator();
     }
 
-    public List<File> getLocalImages() {
+    List<File> getLocalImages() {
         Iterator it = FileUtils.iterateFiles(new File(filesLocation), null, false);
         List<File> result = new ArrayList<>();
         while (it.hasNext()) {
@@ -34,16 +29,13 @@ public class FileManager {
         return result;
     }
 
-    public String save(RenderedImage img) throws IOException {
+    String save(RenderedImage img) throws IOException {
         var path = filesLocation + "\\output\\" + outputCounter++ + ".jpg";
         File outputFile = new File(path);
-        if (outputFile.exists()) {
-            System.out.println();
-        } else {
+        if (!outputFile.exists()){
             outputFile.mkdirs();
-        }
+            }
         ImageIO.write(img, "jpg", outputFile);
         return path;
     }
-
 }

@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ImageGUI extends JFrame {
+class ImageGUI extends JFrame {
     private JPanel mainPanel;
 
-    public ImageGUI() {
+    ImageGUI() {
         super();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         try {
@@ -19,7 +19,7 @@ public class ImageGUI extends JFrame {
         setSize(new Dimension(800,800));
     }
 
-    public void displayImage(Image img, String imageName) {
+    void displayImage(Image img, String imageName) {
 
         var imgIcon = new ImageIcon(img);
         var mLabel = new JLabel();
