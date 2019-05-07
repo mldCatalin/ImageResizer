@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 
+//TODO: operatiunile trebuie sa se intample pe membru (img), nu sa tot pasam din stanga in dreapta.
 public class ImageEditEngine {
 
     private final static int WIDTH = 800;
@@ -33,6 +34,7 @@ public class ImageEditEngine {
 
     static Image openImage(File file) {
         try {
+            //TODO: de exemplu aici. de ce intorc spre exterior? ar trebui sa incarc in img.
             return ImageIO.read(file);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,6 +67,7 @@ public class ImageEditEngine {
 
         ResampleOp resizeOp = new ResampleOp(new_width, new_height);
         resizeOp.setFilter(ResampleFilters.getLanczos3Filter());
+        //TODO: sau aici, de ce am acest scaledImage, in loc sa folosesc img?
         BufferedImage scaledImage = resizeOp.filter(toBufferedImage(img), null);
         return scaledImage;
         //return img.getScaledInstance(new_width, new_height, Image.SCALE_AREA_AVERAGING);
@@ -99,6 +102,6 @@ public class ImageEditEngine {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, max, max);
         g.drawImage(originalImg, (max - original_width) / 2, (max - original_height) / 2, original_width, original_height, Color.BLACK, null);
-        return img;
+        return img;//TODO: nimeni altcineva nu trebuie sa intoarca img in afara de getImg. altfel sunt 2 functii care fac acelasi lucru
     }
 }
