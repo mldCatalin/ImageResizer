@@ -13,6 +13,8 @@ public class Main {
         Iterator iterator = files.iterator();
         while (iterator.hasNext()) {
             var file = (File) iterator.next();
+            //TODO: uitandu-ma mai jos vad ca fac un ImageEditEngine(file) si apoi din editEngine.getImg() direct imi scoate rezultatul. 
+            //This is kind of confusing. Ce s-a intamplat si unde de e gata deja imaginea? Simt ca nu a fost transparent fata de mine si this makes me uneasy.
             var editEngine = new ImageEditEngine(file);
             String imageName = "";
             try {
