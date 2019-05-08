@@ -13,23 +13,23 @@ public class ImageEditEngine {
     private final static int HEIGHT = 800;
     private Image img;
 
-//    Image getImg() {
-//        return img;
-//    }
-//    ImageEditEngine() {
-//    }
-//    ImageEditEngine(File file){
-//        openImage(file);
-//        resize(WIDTH, HEIGHT, img);
-//        fill(img);
-//    }
-
-    Image processImage(File file) {
+    Image getImg() {
+        return img;
+    }
+    ImageEditEngine() {
+    }
+    ImageEditEngine(File file){
         openImage(file);
         resize(WIDTH, HEIGHT, img);
         fill(img);
-        return img;
     }
+
+//    Image processImage(File file) {
+//        openImage(file);
+//        resize(WIDTH, HEIGHT, img);
+//        fill(img);
+//        return img;
+//    }
 
     public static Image openImage(URL imgUrl) {
         try {
