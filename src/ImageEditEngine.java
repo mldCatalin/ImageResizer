@@ -13,14 +13,22 @@ public class ImageEditEngine {
     private final static int HEIGHT = 800;
     private Image img;
 
-    Image getImg() {
-        return img;
-    }
+//    Image getImg() {
+//        return img;
+//    }
+//    ImageEditEngine() {
+//    }
+//    ImageEditEngine(File file){
+//        openImage(file);
+//        resize(WIDTH, HEIGHT, img);
+//        fill(img);
+//    }
 
-    ImageEditEngine(File file) {
-        this.img = openImage(file);
-        img = resize(WIDTH, HEIGHT, img);
-        img = fill(img);
+    Image processImage(File file) {
+        openImage(file);
+        resize(WIDTH, HEIGHT, img);
+        fill(img);
+        return img;
     }
 
     public static Image openImage(URL imgUrl) {
@@ -32,17 +40,17 @@ public class ImageEditEngine {
         }
     }
 
-    static Image openImage(File file) {
+    void openImage(File file) {
         try {
-            //TODO: de exemplu aici. de ce intorc spre exterior? ar trebui sa incarc in img.
-            return ImageIO.read(file);
+            //A de exemplu aici. de ce intorc spre exterior? ar trebui sa incarc in img.
+            this.img = ImageIO.read(file);
         } catch (Exception e) {
             e.printStackTrace();
-            return new BufferedImage(0, 0, BufferedImage.TYPE_INT_RGB);
+            this.img = new BufferedImage(0, 0, BufferedImage.TYPE_INT_RGB);
         }
     }
 
-    Image resize(int boundWidth, int boundHeight, Image img) {
+    void resize(int boundWidth, int boundHeight, Image img) {
         int original_width = ((BufferedImage) img).getWidth();
         int original_height = ((BufferedImage) img).getHeight();
         int new_width = original_width;
@@ -67,9 +75,9 @@ public class ImageEditEngine {
 
         ResampleOp resizeOp = new ResampleOp(new_width, new_height);
         resizeOp.setFilter(ResampleFilters.getLanczos3Filter());
-        //TODO: sau aici, de ce am acest scaledImage, in loc sa folosesc img?
+        //A: sau aici, de ce am acest scaledImage, in loc sa folosesc img?
         BufferedImage scaledImage = resizeOp.filter(toBufferedImage(img), null);
-        return scaledImage;
+        this.img = scaledImage;
         //return img.getScaledInstance(new_width, new_height, Image.SCALE_AREA_AVERAGING);
     }
 
@@ -77,24 +85,21 @@ public class ImageEditEngine {
         if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
-
         // Create a buffered image with transparency
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
         // Draw the image on to the buffered image
         Graphics2D bGr = bimage.createGraphics();
         bGr.drawImage(img, 0, 0, null);
         bGr.dispose();
-
         // Return the buffered image
         return bimage;
     }
 
-    Image fill(Image originalImg) {
+    void fill(Image originalImg) {
         int original_width = originalImg.getWidth(null);
         int original_height = originalImg.getHeight(null);
         if (original_height == original_width)
-            return originalImg;
+            this.img = originalImg;
         var max = original_height > original_width ? original_height : original_width;
         BufferedImage img = new BufferedImage(max, max, BufferedImage.TYPE_3BYTE_BGR);
         img.createGraphics();
@@ -102,6 +107,6 @@ public class ImageEditEngine {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, max, max);
         g.drawImage(originalImg, (max - original_width) / 2, (max - original_height) / 2, original_width, original_height, Color.BLACK, null);
-        return img;//TODO: nimeni altcineva nu trebuie sa intoarca img in afara de getImg. altfel sunt 2 functii care fac acelasi lucru
+        this.img = img;//A: nimeni altcineva nu trebuie sa intoarca img in afara de getImg. altfel sunt 2 functii care fac acelasi lucru
     }
 }
