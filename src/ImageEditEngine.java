@@ -8,7 +8,6 @@ import java.io.File;
 import java.net.URL;
 
 public class ImageEditEngine {
-
     private final static int WIDTH = 800;
     private final static int HEIGHT = 800;
     private Image img;

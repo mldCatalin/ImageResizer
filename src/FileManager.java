@@ -1,4 +1,5 @@
 import org.apache.commons.io.FileUtils;
+
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -11,25 +12,41 @@ class FileManager {
     private String filesLocation;
     private ImageValidator validator;
     private int outputCounter;
+    private List<File> imagesList = new ArrayList<>();
+    private ImageGUI gui = new ImageGUI();
 
     FileManager() {
         filesLocation = System.getProperty("user.dir");
         validator = new ImageValidator();
     }
 
-    List<File> getLocalImages() {
+    void processAllImages() {
+        var fileManager = new FileManager();
+        getLocalImages();
+        for (File file : imagesList) {
+            var processedImage = new ImageEditEngine(file);
+            String imageName = "";
+            try {
+                imageName = fileManager.save((RenderedImage) processedImage.getImg());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            gui.displayImage(processedImage.getImg(), imageName);
+            gui.setVisible(true);
+        }
+    }
+
+    private void getLocalImages() {
         Iterator it = FileUtils.iterateFiles(new File(filesLocation), null, false);
-        List<File> result = new ArrayList<>();
         while (it.hasNext()) {
             File file = (File) it.next();
             var fileName = file.getName();
             if (validator.validate(fileName))
-                result.add(file);
+                imagesList.add(file);
         }
-        return result;
     }
 
-    String save(RenderedImage img) throws IOException {
+    private String save(RenderedImage img) throws IOException {
         String path = filesLocation + "\\output\\" + outputCounter++ + ".jpg";
         File outputFile = new File(path);
         if (!outputFile.exists()) {
