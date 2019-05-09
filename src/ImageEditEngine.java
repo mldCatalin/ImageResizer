@@ -14,6 +14,8 @@ public class ImageEditEngine {
 
     ImageEditEngine(File file) {
         openImage(file);
+        //TODO: inca din costructor stii ca vom vrea resize si fill? Daca vine alt client care vrea resize fara fill? mai faci un obiect cu un constructor diferit?
+        //constructorul e pt initializare, nu pt operatiuni
         resize();
         fill();
     }
@@ -62,7 +64,7 @@ public class ImageEditEngine {
         this.img = resizeOp.filter(toBufferedImage(this.img), null);
     }
 
-    private static BufferedImage toBufferedImage(Image img) {
+    private static BufferedImage toBufferedImage(Image img) {//TODO: de ce primim parametru? ca avem imaginea ca si member variable. Stiu primul raspuns pe care o sa mi-l dai, think beyond that. 
         if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
