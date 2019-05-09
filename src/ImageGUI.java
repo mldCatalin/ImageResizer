@@ -16,7 +16,7 @@ class ImageGUI extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         add(mainPanel);
-        setSize(new Dimension(800,800));
+        setSize(new Dimension(800, 800));
     }
 
     void displayImage(Image img, String imageName) {

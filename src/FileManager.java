@@ -30,11 +30,11 @@ class FileManager {
     }
 
     String save(RenderedImage img) throws IOException {
-        var path = filesLocation + "\\output\\" + outputCounter++ + ".jpg";
+        String path = filesLocation + "\\output\\" + outputCounter++ + ".jpg";
         File outputFile = new File(path);
-        if (!outputFile.exists()){
+        if (!outputFile.exists()) {
             outputFile.mkdirs();
-            }
+        }
         ImageIO.write(img, "jpg", outputFile);
         return path;
     }

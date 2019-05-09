@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 class ImageValidator {
 
     private Pattern pattern;
-
     private static final String IMAGE_PATTERN =
             "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)";
 
@@ -20,7 +19,6 @@ class ImageValidator {
      * @return true valid image, false invalid image
      */
     boolean validate(final String image) {
-
         Matcher matcher = pattern.matcher(image);
         return matcher.matches();
     }
