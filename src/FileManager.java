@@ -24,7 +24,7 @@ class FileManager {
         var fileManager = new FileManager();
         getLocalImages();
         for (File file : imagesList) {
-            var processedImage = new ImageEditEngine(file);
+            var processedImage = new ImageEditEngine(file);//TODO: processedImage e o imagine procesata, sau un ImageEditEngine? I'm confused
             String imageName = "";
             try {
                 imageName = fileManager.save((RenderedImage) processedImage.getImg());
@@ -36,7 +36,7 @@ class FileManager {
         }
     }
 
-    private void getLocalImages() {
+    private void getLocalImages() {//TODO: you're not actually getting anyting, cause void. maybe loadLocalImages
         Iterator it = FileUtils.iterateFiles(new File(filesLocation), null, false);
         while (it.hasNext()) {
             File file = (File) it.next();
