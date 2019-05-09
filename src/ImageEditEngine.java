@@ -12,12 +12,11 @@ public class ImageEditEngine {
     private final static int HEIGHT = 800;
     private Image img;
 
-    ImageEditEngine(File file) {
+    Image editImage(File file) {
         openImage(file);
-        //TODO: inca din costructor stii ca vom vrea resize si fill? Daca vine alt client care vrea resize fara fill? mai faci un obiect cu un constructor diferit?
-        //constructorul e pt initializare, nu pt operatiuni
         resize();
         fill();
+        return img;
     }
 
     public static Image openImage(URL imgUrl) {
@@ -61,10 +60,10 @@ public class ImageEditEngine {
         }
         ResampleOp resizeOp = new ResampleOp(new_width, new_height);
         resizeOp.setFilter(ResampleFilters.getLanczos3Filter());
-        this.img = resizeOp.filter(toBufferedImage(this.img), null);
+        this.img = resizeOp.filter(toBufferedImage(), null);
     }
 
-    private static BufferedImage toBufferedImage(Image img) {//TODO: de ce primim parametru? ca avem imaginea ca si member variable. Stiu primul raspuns pe care o sa mi-l dai, think beyond that. 
+    private BufferedImage toBufferedImage() {
         if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
@@ -91,9 +90,5 @@ public class ImageEditEngine {
         g.fillRect(0, 0, max, max);
         g.drawImage(this.img, (max - original_width) / 2, (max - original_height) / 2, original_width, original_height, Color.BLACK, null);
         this.img = bufferedImage;
-    }
-
-    Image getImg() {
-        return img;
     }
 }

@@ -12,7 +12,7 @@ class FileManager {
     private String filesLocation;
     private ImageValidator validator;
     private int outputCounter;
-    private List<File> imagesList = new ArrayList<>();
+    private List<File> imageFiles = new ArrayList<>();
     private ImageGUI gui = new ImageGUI();
 
     FileManager() {
@@ -21,37 +21,35 @@ class FileManager {
     }
 
     void processAllImages() {
-        var fileManager = new FileManager();
-        getLocalImages();
-        for (File file : imagesList) {
-            var processedImage = new ImageEditEngine(file);//TODO: processedImage e o imagine procesata, sau un ImageEditEngine? I'm confused
-            String imageName = "";
+        loadLocalImages();
+        for (File file : imageFiles) {
+            var editEngine = new ImageEditEngine();
+            var processedImage = editEngine.editImage(file);
+            String processedImageName = "";
             try {
-                imageName = fileManager.save((RenderedImage) processedImage.getImg());
+                processedImageName = save((RenderedImage) processedImage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            gui.displayImage(processedImage.getImg(), imageName);
+            gui.displayImage(processedImage, processedImageName);
             gui.setVisible(true);
         }
     }
 
-    private void getLocalImages() {//TODO: you're not actually getting anyting, cause void. maybe loadLocalImages
+    private void loadLocalImages() {
         Iterator it = FileUtils.iterateFiles(new File(filesLocation), null, false);
         while (it.hasNext()) {
             File file = (File) it.next();
             var fileName = file.getName();
             if (validator.validate(fileName))
-                imagesList.add(file);
+                imageFiles.add(file);
         }
     }
 
     private String save(RenderedImage img) throws IOException {
         String path = filesLocation + "\\output\\" + outputCounter++ + ".jpg";
         File outputFile = new File(path);
-        if (!outputFile.exists()) {
-            outputFile.mkdirs();
-        }
+        outputFile.mkdirs();
         ImageIO.write(img, "jpg", outputFile);
         return path;
     }
